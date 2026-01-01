@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎓 منصة إدارة الورش التدريبية
 
-## Getting Started
+<div dir="rtl">
 
-First, run the development server:
+منصة SaaS متكاملة لإدارة الورش التدريبية وإصدار الشهادات مع تكامل WhatsApp API.
 
+## ✨ الميزات الرئيسية
+
+### للمنظمين (أكاديميات/أفراد)
+- ✅ إنشاء وإدارة الورش التدريبية
+- ✅ نموذج تسجيل مخصص لكل ورشة
+- ✅ قبول/رفض الطلاب (فردي وجماعي)
+- ✅ إشعارات WhatsApp تلقائية
+- ✅ إنشاء وإرسال الشهادات بشكل جماعي
+- ✅ تخصيص رسائل WhatsApp
+- ✅ لوحة تحكم مع إحصائيات شاملة
+
+### للطلاب
+- ✅ التسجيل في الورش عبر رابط عام
+- ✅ متابعة حالة التسجيل
+- ✅ استلام الإشعارات عبر WhatsApp
+- ✅ عرض وتحميل الشهادات
+- ✅ مشاركة الشهادات على LinkedIn/Twitter
+
+### مميزات إضافية
+- ✅ شهادات PDF مع QR Code للتحقق
+- ✅ صفحة عرض عامة لكل شهادة
+- ✅ نظام اشتراكات (Stripe)
+- ✅ واجهة عربية كاملة (RTL)
+- ✅ تصميم احترافي وسهل الاستخدام
+
+## 🚀 التقنيات المستخدمة
+
+- **Frontend:** Next.js 15, React 19, TypeScript
+- **Styling:** Tailwind CSS, shadcn/ui
+- **Backend:** Supabase (PostgreSQL, Auth, Storage)
+- **Integrations:** WhatsApp API (Automapi), Stripe
+- **PDF:** pdf-lib, qrcode
+- **Date:** date-fns
+
+## 📦 التثبيت والتشغيل
+
+### 1. تثبيت المكتبات
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. إعداد البيئة
+إنشاء ملف `.env.local`:
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+WHATSAPP_API_URL=https://automapi.com/api/send
+WHATSAPP_INSTANCE_ID=your_instance_id
+WHATSAPP_ACCESS_TOKEN=your_access_token
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+```
 
-## Learn More
+### 3. إعداد Supabase
+راجع `SETUP_GUIDE.md` للتفاصيل الكاملة.
 
-To learn more about Next.js, take a look at the following resources:
+### 4. تشغيل المشروع
+```bash
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+افتح [http://localhost:3000](http://localhost:3000) في المتصفح.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📚 الوثائق
 
-## Deploy on Vercel
+- [`SETUP_GUIDE.md`](./SETUP_GUIDE.md) - دليل الإعداد التفصيلي
+- [`FINAL_IMPLEMENTATION_REPORT.md`](./FINAL_IMPLEMENTATION_REPORT.md) - تقرير الإنجاز الكامل
+- [`PROJECT_SUMMARY.md`](./PROJECT_SUMMARY.md) - ملخص المشروع
+- [`NEXT_STEPS.md`](./NEXT_STEPS.md) - الخطوات التالية
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🎯 الحالة الحالية
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**95%** مكتمل - المنصة جاهزة للاستخدام!
+
+### ما تم إنجازه ✅
+- نظام المصادقة الكامل
+- إدارة الورش
+- نظام التسجيل والقبول/الرفض
+- تكامل WhatsApp API
+- نظام الشهادات مع PDF و QR Code
+- صفحة الإعدادات
+- بنية Stripe الأساسية
+
+### ما تبقى ⏳
+- صفحات UI للاشتراكات
+- تقارير متقدمة (اختياري)
+
+## 📄 الترخيص
+
+MIT License
+
+## 🤝 المساهمة
+
+المساهمات مرحب بها! يرجى فتح Issue أو Pull Request.
+
+---
+
+**تم بناء المشروع بواسطة:** Claude (Anthropic)  
+**الإصدار:** 1.0.0  
+**التاريخ:** يناير 2026
+
+</div>
