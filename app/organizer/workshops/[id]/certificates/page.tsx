@@ -41,8 +41,8 @@ export default async function CertificatesPage({
 
   const stats = {
     total: registrations?.length || 0,
-    withCertificate: registrations?.filter((r: any) => r.certificate_issued.length > 0).length || 0,
-    withoutCertificate: registrations?.filter((r: any) => r.certificate_issued.length === 0).length || 0,
+    withCertificate: registrations?.filter((r: any) => r.certificate_issued && r.certificate_issued.length > 0).length || 0,
+    withoutCertificate: registrations?.filter((r: any) => !r.certificate_issued || r.certificate_issued.length === 0).length || 0,
   };
 
   return (
@@ -101,7 +101,7 @@ export default async function CertificatesPage({
         {registrations && registrations.length > 0 ? (
           <div className="space-y-4">
             {registrations.map((registration: any) => {
-              const hasCertificate = registration.certificate_issued.length > 0;
+              const hasCertificate = registration.certificate_issued && registration.certificate_issued.length > 0;
               const certificate = hasCertificate ? registration.certificate_issued[0] : null;
 
               return (
