@@ -7,12 +7,13 @@ import { format } from "date-fns";
 import { ar } from "date-fns/locale";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ShareCertificateButton } from "@/components/certificates/share-certificate-button";
 
 export default async function MyCertificatesPage() {
   const supabase = await createClient();
-  
+
   const { data: { user } } = await supabase.auth.getUser();
-  
+
   if (!user) {
     redirect("/login");
   }
@@ -49,7 +50,7 @@ export default async function MyCertificatesPage() {
           {certificates.map((certificate: any) => {
             const registration = certificate.registrations;
             const workshop = registration.workshops;
-            
+
             return (
               <Card key={certificate.id} className="overflow-hidden">
                 <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50">
@@ -69,18 +70,18 @@ export default async function MyCertificatesPage() {
                       </Badge>
                     </div>
                   </div>
-                  
+
                   <p className="text-xs text-gray-500">
                     تاريخ الإصدار: {format(new Date(certificate.issued_at), "PPP", { locale: ar })}
                   </p>
-                  
+
                   <div className="flex flex-col gap-2">
                     <Button size="sm" asChild className="w-full">
                       <Link href={`/certificate/${certificate.verification_code}`} target="_blank">
                         عرض الشهادة
                       </Link>
                     </Button>
-                    
+
                     <div className="grid grid-cols-2 gap-2">
                       <Button size="sm" variant="outline" asChild>
                         <a href={certificate.certificate_url} download>
@@ -88,19 +89,8 @@ export default async function MyCertificatesPage() {
                           تحميل
                         </a>
                       </Button>
-                      
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => {
-                          const url = `${window.location.origin}/certificate/${certificate.verification_code}`;
-                          const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
-                          window.open(linkedInUrl, '_blank', 'width=600,height=600');
-                        }}
-                      >
-                        <Share2 className="ml-2 h-4 w-4" />
-                        مشاركة
-                      </Button>
+
+                      <ShareCertificateButton verificationCode={certificate.verification_code} />
                     </div>
                   </div>
                 </CardContent>

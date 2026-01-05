@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Plus, Calendar, Users, Edit, ExternalLink } from "lucide-react";
 import { format } from "date-fns";
 import { ar } from "date-fns/locale";
+import { CopyRegistrationLink } from "@/components/workshops/copy-registration-link";
 
 export default async function WorkshopsPage() {
   const supabase = await createClient();
@@ -88,15 +89,7 @@ export default async function WorkshopsPage() {
                             readOnly
                             className="flex-1 px-3 py-2 text-sm bg-white border rounded"
                           />
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => {
-                              navigator.clipboard.writeText(registrationLink);
-                            }}
-                          >
-                            نسخ
-                          </Button>
+                          <CopyRegistrationLink link={registrationLink} />
                         </div>
                       </div>
                     )}
