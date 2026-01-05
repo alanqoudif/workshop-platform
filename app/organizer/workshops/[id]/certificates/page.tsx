@@ -11,15 +11,16 @@ import { CertificateActions } from "@/components/certificates/certificate-action
 export default async function CertificatesPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const supabase = await createClient();
 
   // Get workshop details
   const { data: workshop } = await supabase
     .from("workshops")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", id)
     .single();
 
   // Get approved registrations with certificates
@@ -34,7 +35,7 @@ export default async function CertificatesPage({
         issued_at
       )
     `)
-    .eq("workshop_id", params.id)
+    .eq("workshop_id", id)
     .eq("status", "approved")
     .order("approved_at", { ascending: false });
 
@@ -50,7 +51,7 @@ export default async function CertificatesPage({
       <div className="flex items-center justify-between">
         <div>
           <Button variant="ghost" size="sm" asChild className="mb-2">
-            <Link href={`/organizer/workshops/${params.id}`}>
+            <Link href={`/organizer/workshops/${id}`}>
               <ArrowRight className="ml-2 h-4 w-4" />
               العودة للورشة
             </Link>
@@ -91,18 +92,18 @@ export default async function CertificatesPage({
       </div>
 
       {/* Actions */}
-      <CertificateActions workshopId={params.id} hasStudents={stats.total > 0} />
+      <CertificateActions workshopId={id} hasStudents={stats.total > 0} />
 
       {/* Certificates List */}
       <div>
         <h2 className="text-xl font-semibold mb-4">قائمة الطلاب</h2>
-        
+
         {registrations && registrations.length > 0 ? (
           <div className="space-y-4">
             {registrations.map((registration: any) => {
               const hasCertificate = registration.certificate_issued.length > 0;
               const certificate = hasCertificate ? registration.certificate_issued[0] : null;
-              
+
               return (
                 <Card key={registration.id}>
                   <CardContent className="pt-6">
@@ -119,7 +120,7 @@ export default async function CertificatesPage({
                             <Badge variant="secondary">لم يتم الإصدار</Badge>
                           )}
                         </div>
-                        
+
                         <div className="text-sm text-gray-600 space-y-1">
                           <p>{registration.student_email}</p>
                           <p>{registration.student_phone}</p>
@@ -130,7 +131,7 @@ export default async function CertificatesPage({
                           )}
                         </div>
                       </div>
-                      
+
                       <div className="flex gap-2">
                         {hasCertificate ? (
                           <>
@@ -165,7 +166,7 @@ export default async function CertificatesPage({
                 قم بقبول الطلاب أولاً من صفحة التسجيلات
               </p>
               <Button asChild className="mt-4">
-                <Link href={`/organizer/workshops/${params.id}/registrations`}>
+                <Link href={`/organizer/workshops/${id}/registrations`}>
                   إدارة التسجيلات
                 </Link>
               </Button>

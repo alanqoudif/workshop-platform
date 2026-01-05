@@ -8,22 +8,23 @@ import { ArrowRight, Users, CheckCircle, XCircle, Clock } from "lucide-react";
 export default async function RegistrationsPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const supabase = await createClient();
 
   // Get workshop details
   const { data: workshop } = await supabase
     .from("workshops")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", id)
     .single();
 
   // Get all registrations
   const { data: registrations } = await supabase
     .from("registrations")
     .select("*")
-    .eq("workshop_id", params.id)
+    .eq("workshop_id", id)
     .order("registered_at", { ascending: false });
 
   // Calculate stats
@@ -40,7 +41,7 @@ export default async function RegistrationsPage({
       <div className="flex items-center justify-between">
         <div>
           <Button variant="ghost" size="sm" asChild className="mb-2">
-            <Link href={`/organizer/workshops/${params.id}`}>
+            <Link href={`/organizer/workshops/${id}`}>
               <ArrowRight className="ml-2 h-4 w-4" />
               العودة للورشة
             </Link>
@@ -98,7 +99,7 @@ export default async function RegistrationsPage({
         <h2 className="text-xl font-semibold mb-4">قائمة المسجلين</h2>
         <RegistrationList
           registrations={registrations || []}
-          workshopId={params.id}
+          workshopId={id}
         />
       </div>
     </div>

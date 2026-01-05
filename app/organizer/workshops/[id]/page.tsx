@@ -11,8 +11,9 @@ import { redirect, notFound } from "next/navigation";
 export default async function WorkshopDetailsPage({
     params,
 }: {
-    params: { id: string };
+    params: Promise<{ id: string }>;
 }) {
+    const { id } = await params;
     const supabase = await createClient();
 
     const { data: { user } } = await supabase.auth.getUser();
@@ -21,7 +22,7 @@ export default async function WorkshopDetailsPage({
     const { data: workshop } = await supabase
         .from("workshops")
         .select("*")
-        .eq("id", params.id)
+        .eq("id", id)
         .single();
 
     if (!workshop) {
@@ -32,7 +33,7 @@ export default async function WorkshopDetailsPage({
     const { data: registrations } = await supabase
         .from("registrations")
         .select("status")
-        .eq("workshop_id", params.id);
+        .eq("workshop_id", id);
 
     const stats = {
         total: registrations?.length || 0,
@@ -69,7 +70,7 @@ export default async function WorkshopDetailsPage({
                 </div>
                 <div className="flex gap-2">
                     <Button asChild variant="outline">
-                        <Link href={`/organizer/workshops/${params.id}/edit`}>
+                        <Link href={`/organizer/workshops/${id}/edit`}>
                             <Edit className="ml-2 h-4 w-4" />
                             تعديل الورشة
                         </Link>
@@ -131,13 +132,13 @@ export default async function WorkshopDetailsPage({
 
                     <div className="grid grid-cols-1 gap-3">
                         <Button asChild className="w-full justify-start py-6" variant="outline">
-                            <Link href={`/organizer/workshops/${params.id}/registrations`}>
+                            <Link href={`/organizer/workshops/${id}/registrations`}>
                                 <Users className="ml-4 h-5 w-5 text-blue-600" />
                                 إدارة التسجيلات
                             </Link>
                         </Button>
                         <Button asChild className="w-full justify-start py-6" variant="outline">
-                            <Link href={`/organizer/workshops/${params.id}/certificates`}>
+                            <Link href={`/organizer/workshops/${id}/certificates`}>
                                 <Award className="ml-4 h-5 w-5 text-blue-600" />
                                 تخصيص الشهادات
                             </Link>

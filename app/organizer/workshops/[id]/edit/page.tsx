@@ -6,8 +6,9 @@ import { redirect, notFound } from "next/navigation";
 export default async function EditWorkshopPage({
     params,
 }: {
-    params: { id: string };
+    params: Promise<{ id: string }>;
 }) {
+    const { id } = await params;
     const supabase = await createClient();
 
     const { data: { user } } = await supabase.auth.getUser();
@@ -16,7 +17,7 @@ export default async function EditWorkshopPage({
     const { data: workshop } = await supabase
         .from("workshops")
         .select("*")
-        .eq("id", params.id)
+        .eq("id", id)
         .single();
 
     if (!workshop) {
