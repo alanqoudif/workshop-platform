@@ -47,7 +47,7 @@ export function useAuth() {
         .single();
 
       if (error) throw error;
-      setProfile(data);
+      setProfile(data as AppUser | null);
     } catch (error) {
       console.error("Error fetching profile:", error);
     } finally {

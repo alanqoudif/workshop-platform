@@ -33,7 +33,7 @@ const formSchema = z.object({
   title: z.string().min(3, "العنوان يجب أن يكون 3 أحرف على الأقل"),
   description: z.string().min(10, "الوصف يجب أن يكون 10 أحرف على الأقل"),
   organizer_type: z.enum(["individual", "academy"]),
-  max_capacity: z.coerce.number().min(1, "السعة يجب أن تكون 1 على الأقل"),
+  max_capacity: z.number().min(1, "السعة يجب أن تكون 1 على الأقل"),
   start_date: z.string().min(1, "تاريخ البداية مطلوب"),
   end_date: z.string().min(1, "تاريخ النهاية مطلوب"),
   status: z.enum(["draft", "active", "completed", "cancelled"]),
@@ -187,6 +187,15 @@ export function WorkshopForm({ workshop, mode }: WorkshopFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>السعة القصوى</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    {...field}
+                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                    value={field.value}
+                    disabled={isLoading}
+                  />
+                </FormControl>
                 <FormControl>
                   <Input
                     type="number"

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { RegisterForm } from "@/components/auth/register-form";
 import { Button } from "@/components/ui/button";
 
+export const dynamic = 'force-dynamic';
+
 export default function RegisterPage() {
   return (
     <div className="space-y-6">

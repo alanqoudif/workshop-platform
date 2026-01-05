@@ -61,13 +61,16 @@ export function RegisterForm() {
     setIsLoading(true);
 
     try {
-      // Sign up user
+      // Sign up user with all metadata
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
         options: {
           data: {
             full_name: values.full_name,
+            phone: values.phone || null,
+            account_role: values.account_role,
+            user_type: values.account_role === "organizer" ? values.user_type : null,
           },
         },
       });
@@ -80,33 +83,53 @@ export function RegisterForm() {
       }
 
       if (authData.user) {
-        // Create user profile
-        const { error: profileError } = await supabase.from("users").insert({
-          id: authData.user.id,
-          email: values.email,
-          phone: values.phone || null,
-          full_name: values.full_name,
-          account_role: values.account_role,
-          user_type: values.account_role === "organizer" ? values.user_type : null,
-        });
+        // Profile is auto-created by database trigger with metadata from signup
+        // Try to update it with additional info (non-blocking - trigger handles the basics)
+        const { error: profileError } = await supabase
+          .from("users")
+          .upsert({
+            id: authData.user.id,
+            email: values.email,
+            phone: values.phone || null,
+            full_name: values.full_name,
+            account_role: values.account_role,
+            user_type: values.account_role === "organizer" ? values.user_type : null,
+          }, {
+            onConflict: 'id'
+          });
 
+        // Log error but don't block registration - trigger will create basic profile
         if (profileError) {
-          toast.error("خطأ في إنشاء الملف الشخصي");
-          console.error(profileError);
-          return;
+          console.error("Profile update error (non-blocking):", {
+            message: profileError.message,
+            details: profileError.details,
+            hint: profileError.hint,
+            code: profileError.code,
+          });
+          // Don't return - let the trigger handle profile creation
         }
 
-        toast.success("تم إنشاء الحساب بنجاح!", {
-          description: "يمكنك الآن تسجيل الدخول",
-        });
+        // Check if email confirmation is required
+        if (authData.session) {
+          // User is immediately authenticated (no email confirmation required)
+          toast.success("تم إنشاء الحساب بنجاح!", {
+            description: "مرحباً بك في المنصة",
+          });
 
-        // Redirect to login or dashboard
-        if (values.account_role === "organizer") {
-          router.push("/organizer/dashboard");
+          // Redirect to dashboard
+          if (values.account_role === "organizer") {
+            router.push("/organizer/dashboard");
+          } else {
+            router.push("/student/my-workshops");
+          }
+          router.refresh();
         } else {
-          router.push("/student/my-workshops");
+          // Email confirmation is required
+          toast.success("تم إنشاء الحساب بنجاح!", {
+            description: "يرجى التحقق من بريدك الإلكتروني لتسجيل الدخول",
+          });
+          router.push("/login");
         }
-        router.refresh();
       }
     } catch (error) {
       toast.error("حدث خطأ غير متوقع");

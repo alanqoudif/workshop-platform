@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { GraduationCap, Users, Award, MessageSquare } from "lucide-react";
+import { WorkshopHero } from "@/components/hero/workshop-hero";
 
 export default function Home() {
   return (
@@ -25,26 +26,21 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-20 text-center">
-        <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          نظّم ورشك التدريبية بسهولة
-        </h2>
-        <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          منصة متخصصة لتسهيل عملية التسجيل في الورش التدريبية وإصدار الشهادات الاحترافية
-        </p>
-        <div className="flex gap-4 justify-center">
-          <Button size="lg" asChild>
-            <Link href="/register?role=organizer">
-              ابدأ كمنظم
-            </Link>
-          </Button>
-          <Button size="lg" variant="outline" asChild>
-            <Link href="/register?role=student">
-              سجل كطالب
-            </Link>
-          </Button>
-        </div>
-      </section>
+      <WorkshopHero
+        badge={{
+          text: "منصة ورش العمل الرائدة في المنطقة",
+        }}
+        title="نظّم ورشك التدريبية بسهولة"
+        description="منصة متخصصة لتسهيل عملية التسجيل في الورش التدريبية وإصدار الشهادات الاحترافية. أنشئ ورشك، سجّل الطلاب، وأصدر الشهادات بكل سهولة."
+        primaryCta={{
+          text: "ابدأ كمنظم",
+          href: "/register?role=organizer",
+        }}
+        secondaryCta={{
+          text: "سجل كطالب",
+          href: "/register?role=student",
+        }}
+      />
 
       {/* Features */}
       <section className="container mx-auto px-4 py-16">

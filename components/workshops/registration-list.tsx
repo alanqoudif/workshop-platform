@@ -208,12 +208,14 @@ export function RegistrationList({ registrations, workshopId }: RegistrationList
                       </div>
 
                       <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
-                        <span>
-                          تاريخ التسجيل:{" "}
-                          {format(new Date(registration.registered_at), "PPP", {
-                            locale: ar,
-                          })}
-                        </span>
+                        {registration.registered_at && (
+                          <span>
+                            تاريخ التسجيل:{" "}
+                            {format(new Date(registration.registered_at), "PPP", {
+                              locale: ar,
+                            })}
+                          </span>
+                        )}
                         {registration.approved_at && (
                           <span>
                             تاريخ القبول:{" "}

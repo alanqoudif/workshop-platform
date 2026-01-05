@@ -3,13 +3,22 @@ import { headers } from 'next/headers';
 import Stripe from 'stripe';
 import { createClient } from '@/lib/supabase/server';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-12-15.clover',
-});
+const stripe = process.env.STRIPE_SECRET_KEY 
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2025-12-15.clover',
+    })
+  : null;
 
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 export async function POST(req: NextRequest) {
+  if (!stripe || !webhookSecret) {
+    return NextResponse.json(
+      { error: 'Stripe is not configured' },
+      { status: 503 }
+    );
+  }
+
   const body = await req.text();
   const headersList = await headers();
   const signature = headersList.get('stripe-signature');

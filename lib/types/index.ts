@@ -1,6 +1,7 @@
 // Re-export database types
 export * from './database.types';
-export type { Database, Tables, TablesInsert, TablesUpdate, Enums, Json } from './database.types';
+export type { Database, Tables, TablesInsert, TablesUpdate, Enums } from './database.types';
+import type { Json } from './database.types';
 
 // Database Types
 export type UserRole = 'organizer' | 'student';
@@ -16,7 +17,7 @@ export interface User {
   email: string;
   phone?: string;
   full_name: string;
-  user_type: OrganizerType;
+  user_type: OrganizerType | null;
   account_role: UserRole;
   created_at: string;
 }
