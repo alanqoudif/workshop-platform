@@ -7,6 +7,7 @@ import { Plus, Calendar, Users, Edit, ExternalLink } from "lucide-react";
 import { format } from "date-fns";
 import { ar } from "date-fns/locale";
 import { CopyRegistrationLink } from "@/components/workshops/copy-registration-link";
+import { getBaseUrl } from "@/lib/utils";
 
 export default async function WorkshopsPage() {
   const supabase = await createClient();
@@ -49,7 +50,7 @@ export default async function WorkshopsPage() {
         <div className="grid gap-6">
           {workshops.map((workshop) => {
             const status = getStatusBadge(workshop.status);
-            const registrationLink = `${process.env.NEXT_PUBLIC_APP_URL}/register/${workshop.id}`;
+            const registrationLink = `${getBaseUrl()}/register/${workshop.id}`;
 
             return (
               <Card key={workshop.id}>
